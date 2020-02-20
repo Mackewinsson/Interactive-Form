@@ -97,6 +97,9 @@ Project Warm Up: This section of the project, working with checkboxes, is one of
 const activities = document.querySelector('.activities');
 const activitiesGroup = activities.children;
 let totalCount = 0;
+let totalCountDisplay = document.createElement('DIV');
+totalCountDisplay.textContent = 'TOTAL: ' + totalCount;
+activities.appendChild(totalCountDisplay);
 
 
 activities.addEventListener('change', (e) =>{
@@ -107,6 +110,7 @@ activities.addEventListener('change', (e) =>{
         let inputChecked = e.target;
         let inputValue = Number(e.target.getAttribute('data-cost'));
         totalCount += inputValue;
+        totalCountDisplay.textContent = 'TOTAL: $' + totalCount;
         for(let i = 1; i < activitiesGroup.length; i++){
             let checkAttribute = activitiesGroup[i].firstElementChild.getAttribute('data-day-and-time');
             let input = activitiesGroup[i].firstElementChild;
@@ -121,6 +125,7 @@ activities.addEventListener('change', (e) =>{
             let inputChecked = e.target;
             let inputValue = Number(e.target.getAttribute('data-cost'));
             totalCount -= inputValue;
+            totalCountDisplay.textContent = 'TOTAL: $' + totalCount;
             for(let i = 1; i < activitiesGroup.length; i++){
                 let checkAttribute = activitiesGroup[i].firstElementChild.getAttribute('data-day-and-time');
                 let input = activitiesGroup[i].firstElementChild;
@@ -130,6 +135,58 @@ activities.addEventListener('change', (e) =>{
                 };
             };
         };
-        
-
 });
+
+/*"Payment Info" section
+Display payment sections based on the payment option chosen in the select menu.
+
+The "Credit Card" payment option should be selected by default. Display the #credit-card div, 
+and hide the "PayPal" and "Bitcoin" information. Payment option in the select menu should match 
+the payment option displayed on the page.
+
+When a user selects the "PayPal" payment option, the PayPal information should display, 
+and the credit card and “Bitcoin” information should be hidden.
+
+When a user selects the "Bitcoin" payment option, the Bitcoin information should display, 
+and the credit card and “PayPal” information should be hidden.
+
+NOTE: The user should not be able to select the "Select Payment Method" option from the payment select menu, because the user should not be able to submit the form without a chosen payment option.*/
+
+const paymentSection = activities.nextElementSibling;
+const paymentOptions = paymentSection.children[2];
+const creditCardOption = paymentOptions.children[1];
+
+creditCardOption.selected = true;
+$('#paypal').hide();
+$('#bitcoin').hide();
+
+addEventListener('change', (e)=>{
+
+
+        if(e.target.value === 'credit card'){
+
+            $('#paypal').hide();
+            $('#bitcoin').hide();
+            $('#credit-card').show();
+
+        } else if (e.target.value === 'paypal'){
+
+            $('#paypal').show();
+            $('#bitcoin').hide();
+            $('#credit-card').hide();
+
+        } else if (e.target.value === 'bitcoin'){
+
+            $('#paypal').hide();
+            $('#bitcoin').show();
+            $('#credit-card').hide();
+
+        } else if (e.target.value === 'select method'){
+            
+            creditCardOption.selected = true;
+        }
+        
+    });
+
+
+
