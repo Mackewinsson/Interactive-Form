@@ -185,8 +185,79 @@ addEventListener('change', (e)=>{
             
             creditCardOption.selected = true;
         }
-        
+
     });
 
+const inputs = document.querySelectorAll('input');
+console.log(inputs);
+const nameField = inputs[0];
+const emailField = inputs[1];
+const check1 = inputs[3];
+const check2 = inputs[4];
+const check3 = inputs[5];
+const check4 = inputs[6];
+const check5 = inputs[7];
+const check6 = inputs[8];
+const check7 = inputs[9];
+// validate email function
 
+function  validateEmail(inputText){
+    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    if(inputText.value.match(mailformat)){
+
+        emailField.focus();
+        emailField.style.borderColor = '';
+        return true;
+    }
+    else {
+        alert("You have entered an invalid email address!");
+        emailField.focus();
+        emailField.style.borderColor = 'red';
+        return false;
+
+    };
+}
+
+$("form button").on('click submit',(e)=>{  
+    if (nameField.value == '') {
+        // NAME
+        e.preventDefault(); 
+        nameField.style.borderColor = 'red';
+        nameField.setAttribute('placeholder', 'Write your name *');
+        nameField.focus();
+        
+    } else if(nameField.value || emailField.value){
+
+        // EMAIL
+        e.preventDefault(); 
+        validateEmail(emailField);
+    };
+});
+
+
+/*
+Form validation
+
+If any of the following validation errors exist, prevent the user from submitting the form:
+
+1.Name field can't be blank.
+
+2.Email field must be a validly formatted e-mail address (you don't have to check that it's a real e-mail address, just that it's formatted like one: dave@teamtreehouse.com for example.
+
+3.User must select at least one checkbox under the "Register for Activities" section of the form.
+
+4.If the selected payment option is "Credit Card," make sure the user has supplied a Credit Card number, a Zip Code, and a 3 number CVV value before the form can be submitted.
+
+5.Credit Card field should only accept a number between 13 and 16 digits.
+
+6. The Zip Code field should accept a 5-digit number.
+
+The CVV should only accept a number that is exactly 3 digits long.
+
+NOTE: Don't rely on the built in HTML5 validation by adding the required attribute to your DOM elements. You need to actually create your own custom validation checks and error messages.
+
+NOTE: Avoid using snippets or plugins for this project. To get the most out of the experience, you should be writing all of your own code for your own custom validation.
+
+NOTE: Make sure your validation is only validating Credit Card info if Credit Card is the selected payment method.*/
 
