@@ -195,7 +195,22 @@ const inputs = document.querySelectorAll('input');
 const nameField = inputs[0];
 const emailField = inputs[1];
 
-// validate email function
+// Validate Name function
+
+function validateName(){
+    if(nameField.value){
+        nameField.style.borderColor = '';
+        return true;
+    } else{
+        alert("You have to write your name");
+        nameField.setAttribute('placeholder', 'Write your name *');
+        nameField.focus();
+        nameField.style.borderColor = 'red';
+        return false;
+    }
+};
+
+// Validate email function
 
 function  validateEmail(inputText){
     var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -204,33 +219,39 @@ function  validateEmail(inputText){
 
         emailField.style.borderColor = '';
         return true;
-    }
-    else {
+
+    } else {
         alert("You have entered an invalid email address!");
         emailField.focus();
         emailField.style.borderColor = 'red';
+        emailField.setAttribute('placeholder', 'Write your email *');
         return false;
-
     };
 };
 
-$("form button").on('click submit',(e)=>{  
+$("form button").on('click submit',(e)=>{ 
+
     if (nameField.value == '') {
         // NAME
-        e.preventDefault(); 
-        nameField.style.borderColor = 'red';
-        nameField.setAttribute('placeholder', 'Write your name *');
+        e.preventDefault();
+        validateName();
+        validateEmail(emailField);
         nameField.focus();
-    } else if(nameField.value || emailField.value){
+    }; 
+    
+    if(nameField.value || emailField.value){
 
         // EMAIL
-        e.preventDefault(); 
+        e.preventDefault();
+        validateName();
         validateEmail(emailField);
 
-    } else if(activitiesGroup[inputChecked]){
+    };
+    
+    if (totalCount > 0){
         e.preventDefault(); 
-        console.log('trigger')
-    }
+        alert('must select at least one')
+    };
 });
 
 
