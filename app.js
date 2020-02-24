@@ -95,7 +95,7 @@ As a user selects activities, a running total should display below the list of c
 Project Warm Up: This section of the project, working with checkboxes, is one of the trickier parts of the project. For some helpful practice, check out the project Warm Up Checkboxes.*/
 
 const activities = document.querySelector('.activities');
-const activitiesGroup = activities.children;
+const activitiesGroup = activities.querySelectorAll('input');
 let totalCount = 0;
 let totalCountDisplay = document.createElement('DIV');
 totalCountDisplay.textContent = 'TOTAL: ' + totalCount;
@@ -106,35 +106,38 @@ activities.addEventListener('change', (e) =>{
 // Checks if a checkbox is checked
     if(e.target.checked === true){
 // Check if one of the inputs has the same date and time and if it does, gray it out
-        const inputAttribute = e.target.getAttribute('data-day-and-time');
-        let inputChecked = e.target;
-        let inputValue = Number(e.target.getAttribute('data-cost'));
+        const inputChecked = e.target;
+        const inputAttribute = inputChecked.getAttribute('data-day-and-time');
+        let inputValue = Number(inputChecked.getAttribute('data-cost'));
         totalCount += inputValue;
         totalCountDisplay.textContent = 'TOTAL: $' + totalCount;
-        for(let i = 1; i < activitiesGroup.length; i++){
-            let checkAttribute = activitiesGroup[i].firstElementChild.getAttribute('data-day-and-time');
-            let input = activitiesGroup[i].firstElementChild;
-            if(inputAttribute === checkAttribute){
-                input.disabled = true;
-                inputChecked.disabled = false;
+
+        if (inputChecked.hasAttribute('data-day-and-time')){
+            for(let i = 0; i < activitiesGroup.length; i++){
+                if (activitiesGroup[i].getAttribute('data-day-and-time') === inputAttribute){
+                    activitiesGroup[i].disabled = true;
+                    inputChecked.disabled = false;
+                }
             };
         };
+
     } else if(e.target.checked === false){
 
-            const inputAttribute = e.target.getAttribute('data-day-and-time');
-            let inputChecked = e.target;
-            let inputValue = Number(e.target.getAttribute('data-cost'));
-            totalCount -= inputValue;
-            totalCountDisplay.textContent = 'TOTAL: $' + totalCount;
-            for(let i = 1; i < activitiesGroup.length; i++){
-                let checkAttribute = activitiesGroup[i].firstElementChild.getAttribute('data-day-and-time');
-                let input = activitiesGroup[i].firstElementChild;
-                if(inputAttribute === checkAttribute){
-                    input.disabled = false;
+        const inputChecked = e.target;
+        const inputAttribute = inputChecked.getAttribute('data-day-and-time');
+        let inputValue = Number(inputChecked.getAttribute('data-cost'));
+        totalCount -= inputValue;
+        totalCountDisplay.textContent = 'TOTAL: $' + totalCount;
+
+        if (inputChecked.hasAttribute('data-day-and-time')){
+            for(let i = 0; i < activitiesGroup.length; i++){
+                if (activitiesGroup[i].getAttribute('data-day-and-time') === inputAttribute){
+                    activitiesGroup[i].disabled = false;
                     inputChecked.disabled = false;
-                };
+                }
             };
         };
+    };
 });
 
 /*"Payment Info" section
@@ -189,16 +192,9 @@ addEventListener('change', (e)=>{
     });
 
 const inputs = document.querySelectorAll('input');
-console.log(inputs);
 const nameField = inputs[0];
 const emailField = inputs[1];
-const check1 = inputs[3];
-const check2 = inputs[4];
-const check3 = inputs[5];
-const check4 = inputs[6];
-const check5 = inputs[7];
-const check6 = inputs[8];
-const check7 = inputs[9];
+
 // validate email function
 
 function  validateEmail(inputText){
@@ -206,7 +202,6 @@ function  validateEmail(inputText){
 
     if(inputText.value.match(mailformat)){
 
-        emailField.focus();
         emailField.style.borderColor = '';
         return true;
     }
@@ -217,7 +212,7 @@ function  validateEmail(inputText){
         return false;
 
     };
-}
+};
 
 $("form button").on('click submit',(e)=>{  
     if (nameField.value == '') {
@@ -226,13 +221,16 @@ $("form button").on('click submit',(e)=>{
         nameField.style.borderColor = 'red';
         nameField.setAttribute('placeholder', 'Write your name *');
         nameField.focus();
-        
     } else if(nameField.value || emailField.value){
 
         // EMAIL
         e.preventDefault(); 
         validateEmail(emailField);
-    };
+
+    } else if(activitiesGroup[inputChecked]){
+        e.preventDefault(); 
+        console.log('trigger')
+    }
 });
 
 
