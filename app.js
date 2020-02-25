@@ -193,7 +193,7 @@ paymentSection.addEventListener('change', (e)=>{
 
 const inputs = document.querySelectorAll('input');
 
-let valid;
+let valid = 0;
 
 // Validate Name function
 
@@ -205,7 +205,7 @@ function validateName(){
     if (name.value.length > 0){
         isValid = true;
         name.style.borderColor = '';
-        valid++;
+        valid += 1
 
     } else if(name.value.length === 0){
         isValid = false;
@@ -234,6 +234,7 @@ function  validateEmail(){
 
         email.style.borderColor = '';
         let isValid = true;
+        valid += 1
 
     } else {
         alert("You have entered an invalid email address!");
@@ -254,6 +255,7 @@ function validateActivities(){
         activities.style.border = '';
         activities.style.borderColor = '';
         isValid = true;
+        valid += 1
 
     } else {
         isValid = false;
@@ -282,6 +284,7 @@ function validatePaymentOptions(){
 
     if (counter !== 0){
         isValid = true;
+        valid += 1
     } else {
         isValid = false;
         paymentOptions.previousElementSibling.style.color = 'red';
@@ -300,6 +303,7 @@ function validateCreditCardNumber() {
     if (ccNum.value.length >=13 && ccNum.value.length <= 16 && isNaN(ccNum.value) === false){
         isValid = true;
         ccNum.style.borderColor = '';
+        valid += 1
 
     } else if(ccNum.value.length === 0){
         isValid = false;
@@ -326,6 +330,7 @@ function validateZipCode(){
     if (zipCode.value.length == 5){
         isValid = true;
         zipCode.style.borderColor = '';
+        valid += 1
     } else if(zipCode.value.length === 0){
         isValid = false;
         zipCode.style.borderColor = 'red';
@@ -348,6 +353,7 @@ function validateCvv(){
     if (cvv.value.length == 3){
         isValid = true;
         cvv.style.borderColor = '';
+        valid += 1
     } else if(cvv.value.length === 0){
         isValid = false;
         cvv.style.borderColor = 'red';
@@ -367,22 +373,24 @@ function validateCvv(){
 
 
 $("form button").on('click submit',(e)=>{
-    
-    e.preventDefault();
 
     // NAME
     if (inputs[0].value.length !== 0) {
         validateName();
     } else{
         validateName();
+        e.preventDefault();
+
     };
     
     // EMAIL
 
     if(inputs[1].value.length !== 0){
         validateEmail(inputs[1]);
+
     } else{
         validateEmail(inputs[1]);
+        e.preventDefault();
     };
 
     // Activities section
@@ -391,6 +399,7 @@ $("form button").on('click submit',(e)=>{
         validateActivities();
     } else{
         validateActivities();
+        e.preventDefault();
     };
 
     // Payment options
@@ -399,6 +408,7 @@ $("form button").on('click submit',(e)=>{
         validatePaymentOptions();
     } else{
         validatePaymentOptions();
+        e.preventDefault();
     }
     // Creditcard option
 
@@ -406,6 +416,7 @@ $("form button").on('click submit',(e)=>{
         validateCreditCardNumber();
     } else {
         validateCreditCardNumber();
+        e.preventDefault();
     };
 
     // Zip code
@@ -414,6 +425,7 @@ $("form button").on('click submit',(e)=>{
         validateZipCode();
     } else {
         validateZipCode();
+        e.preventDefault();
     };
 
     // CVV
@@ -422,9 +434,8 @@ $("form button").on('click submit',(e)=>{
         validateCvv();
     } else {
         validateCvv();
+        e.preventDefault();
     };
-
-    console.log(valid);
 });
 
 
