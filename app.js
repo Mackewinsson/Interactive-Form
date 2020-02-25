@@ -163,7 +163,7 @@ creditCardOption.selected = true;
 $('#paypal').hide();
 $('#bitcoin').hide();
 
-addEventListener('change', (e)=>{
+paymentSection.addEventListener('change', (e)=>{
 
 
         if(e.target.value === 'credit card'){
@@ -189,7 +189,7 @@ addEventListener('change', (e)=>{
             creditCardOption.selected = true;
         }
 
-    });
+});
 
 const inputs = document.querySelectorAll('input');
 const nameField = inputs[0];
@@ -229,6 +229,91 @@ function  validateEmail(inputText){
     };
 };
 
+// Validate Payment options
+
+function validatePaymentOptions(){
+
+    let counter;
+
+    for(let i = 0; i < paymentOptions.children.length; i++ ){
+        if (paymentOptions.children[i].selected){
+            counter += 1;
+        };
+    };
+    if (counter === 0){
+        return true
+    };
+};
+
+// Validate Credit card Number
+
+function validateCreditCardNumber() {
+
+    const ccNum = inputs[10];
+    let isValid = false;
+    if (ccNum.value.length >=13 && ccNum.value.length <= 16 && isNaN(ccNum.value) === false){
+        isValid = true;
+        ccNum.style.borderColor = '';
+
+    } else if(ccNum.value.length === 0){
+        isValid = false;
+        ccNum.style.borderColor = 'red';
+    } else {
+        isValid = false;
+        ccNum.style.borderColor = 'red';
+    };
+  
+    if(isValid === false) {
+       alert("Please provide a valid credit card number!");
+    };
+};
+
+// Validate zip code
+
+function validateZipCode(){
+
+    const zipCode = inputs[11];
+    let isValid = false;
+
+    if (zipCode.value.length == 5){
+        isValid = true;
+        zipCode.style.borderColor = '';
+    } else if(zipCode.value.length === 0){
+        isValid = false;
+        zipCode.style.borderColor = 'red';
+    } else {
+        isValid = false;
+        zipCode.style.borderColor = 'red';
+    }
+
+    if(isValid === false) {
+        alert("Please provide a 5 digit zipcode number!");
+     };
+};
+
+function validateCvv(){
+
+    const cvv = inputs[12];
+    let isValid = false;
+
+    if (cvv.value.length == 3){
+        isValid = true;
+        cvv.style.borderColor = '';
+    } else if(cvv.value.length === 0){
+        isValid = false;
+        cvv.style.borderColor = 'red';
+    } else {
+        isValid = false;
+        cvv.style.borderColor = 'red';
+    }
+
+    if(isValid === false) {
+        alert("Please provide a 3 digit CVV number!");
+     };
+}
+
+// Prevent from submiting
+
 $("form button").on('click submit',(e)=>{ 
 
     if (nameField.value == '') {
@@ -237,24 +322,60 @@ $("form button").on('click submit',(e)=>{
         validateName();
         validateEmail(emailField);
         nameField.focus();
-    }; 
-    
-    if(nameField.value || emailField.value){
+    } else if(nameField.value || emailField.value){
 
-        // EMAIL
+    // EMAIL
+
         e.preventDefault();
         validateName();
         validateEmail(emailField);
+    };
 
-    };
-    
-    if (totalCount > 0){
+    // Activities section
+
+    if (totalCount === 0){
         e.preventDefault(); 
-        alert('must select at least one')
+        alert('must select at least one');
+        activities.style.border = '2px solid red';
+        activities.style.borderColor = 'red';
+    } else{
+        activities.style.border = '';
+        activities.style.borderColor = '';
     };
+
+    // Register for activities
+
+    if (validatePaymentOptions()){
+        alert('You must select al least one payment option');
+    };
+
+    // Creditcard option
+
+    if(inputs[10].value.length !== 0){
+        validateCreditCardNumber();
+    } else {
+        validateCreditCardNumber();
+    };
+
+    // Zip code
+
+    if (inputs[11].value.length !== 0){
+        validateZipCode();
+    } else {
+        validateZipCode();
+    };
+
+    // CVV
+
+    if(inputs[12].value.length !== 0){
+        validateCvv();
+    } else {
+        validateCvv();
+    }
+
 });
 
-
+console.log(inputs);
 /*
 Form validation
 
@@ -279,4 +400,3 @@ NOTE: Don't rely on the built in HTML5 validation by adding the required attribu
 NOTE: Avoid using snippets or plugins for this project. To get the most out of the experience, you should be writing all of your own code for your own custom validation.
 
 NOTE: Make sure your validation is only validating Credit Card info if Credit Card is the selected payment method.*/
-
