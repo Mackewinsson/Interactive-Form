@@ -192,57 +192,101 @@ paymentSection.addEventListener('change', (e)=>{
 });
 
 const inputs = document.querySelectorAll('input');
-const nameField = inputs[0];
-const emailField = inputs[1];
 
 // Validate Name function
 
 function validateName(){
-    if(nameField.value){
-        nameField.style.borderColor = '';
-        return true;
-    } else{
+
+    const name = inputs[0];
+    let isValid = false;
+
+    if (name.value.length > 0){
+        isValid = true;
+        name.style.borderColor = '';
+
+    } else if(name.value.length === 0){
+        isValid = false;
+        name.style.borderColor = 'red';
+        name.setAttribute('placeholder', 'Write your name *');
+        name.focus();
+    } else {
+        isValid = false;
+        name.style.borderColor = 'red';
+        name.focus();
+    };
+
+    if(isValid === false) {
         alert("You have to write your name");
-        nameField.setAttribute('placeholder', 'Write your name *');
-        nameField.focus();
-        nameField.style.borderColor = 'red';
-        return false;
-    }
+     };
+     return isValid;
 };
 
 // Validate email function
 
 function  validateEmail(inputText){
-    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    const email = inputText;
+    let isValid = false;
 
-    if(inputText.value.match(mailformat)){
+    if(email.value.match(mailformat)){
 
-        emailField.style.borderColor = '';
-        return true;
+        email.style.borderColor = '';
+        let isValid = true;
 
     } else {
         alert("You have entered an invalid email address!");
-        emailField.focus();
-        emailField.style.borderColor = 'red';
-        emailField.setAttribute('placeholder', 'Write your email *');
-        return false;
+        email.style.borderColor = 'red';
+        email.setAttribute('placeholder', 'Write your email *');
+        let isValid = false;
     };
+    return isValid;
 };
+
+// Validate Activities
+
+function validateActivities(){
+
+    let isValid = false;
+
+    if(totalCount !== 0){
+        activities.style.border = '';
+        activities.style.borderColor = '';
+        isValid = true;
+
+    } else {
+        isValid = false;
+        alert('must select at least one');
+        activities.style.border = '2px solid red';
+        activities.style.borderColor = 'red';
+    };
+    return isValid;  
+}
+
+
+
 
 // Validate Payment options
 
 function validatePaymentOptions(){
 
     let counter;
+    let isValid;
 
     for(let i = 0; i < paymentOptions.children.length; i++ ){
         if (paymentOptions.children[i].selected){
             counter += 1;
         };
     };
-    if (counter === 0){
-        return true
+
+    if (counter !== 0){
+        isValid = true;
+    } else {
+        isValid = false;
+        paymentOptions.previousElementSibling.style.color = 'red';
+        alert('You must select al least one payment option');
     };
+    
+    return isValid;
 };
 
 // Validate Credit card Number
@@ -266,6 +310,8 @@ function validateCreditCardNumber() {
     if(isValid === false) {
        alert("Please provide a valid credit card number!");
     };
+
+    return isValid;
 };
 
 // Validate zip code
@@ -288,7 +334,8 @@ function validateZipCode(){
 
     if(isValid === false) {
         alert("Please provide a 5 digit zipcode number!");
-     };
+    };
+    return isValid;
 };
 
 function validateCvv(){
@@ -310,45 +357,44 @@ function validateCvv(){
     if(isValid === false) {
         alert("Please provide a 3 digit CVV number!");
      };
+    return isValid;
 }
 
 // Prevent from submiting
 
 $("form button").on('click submit',(e)=>{ 
 
-    if (nameField.value == '') {
-        // NAME
-        e.preventDefault();
-        validateName();
-        validateEmail(emailField);
-        nameField.focus();
-    } else if(nameField.value || emailField.value){
+    // NAME
 
+    if (inputs[0].value.length !== 0) {
+        validateName();
+    } else{
+        validateName();
+    };
+    
     // EMAIL
 
-        e.preventDefault();
-        validateName();
-        validateEmail(emailField);
+    if(inputs[1].value.length !== 0){
+        validateEmail(inputs[1]);
+    } else{
+        validateEmail(inputs[1]);
     };
 
     // Activities section
 
-    if (totalCount === 0){
-        e.preventDefault(); 
-        alert('must select at least one');
-        activities.style.border = '2px solid red';
-        activities.style.borderColor = 'red';
+    if (totalCount !== 0){
+        validateActivities();
     } else{
-        activities.style.border = '';
-        activities.style.borderColor = '';
+        validateActivities();
     };
 
-    // Register for activities
+    // Payment options
 
-    if (validatePaymentOptions()){
-        alert('You must select al least one payment option');
-    };
-
+    if (paymentOptions.length !== 0){
+        validatePaymentOptions();
+    } else{
+        validatePaymentOptions();
+    }
     // Creditcard option
 
     if(inputs[10].value.length !== 0){
@@ -373,9 +419,20 @@ $("form button").on('click submit',(e)=>{
         validateCvv();
     }
 
+    if (
+        validateName() === true && 
+        validateEmail() === true &&
+        validateActivities() === true &&
+        validatePaymentOptions() === true &&
+        validateCreditCardNumber() === true &&
+        validateZipCode()=== true &&
+        validateCvv() == true
+        ){
+            console.log('true');
+    }else{
+        e.preventDefault();
+    }
 });
-
-console.log(inputs);
 /*
 Form validation
 
