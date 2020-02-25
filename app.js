@@ -193,6 +193,8 @@ paymentSection.addEventListener('change', (e)=>{
 
 const inputs = document.querySelectorAll('input');
 
+let valid;
+
 // Validate Name function
 
 function validateName(){
@@ -203,6 +205,7 @@ function validateName(){
     if (name.value.length > 0){
         isValid = true;
         name.style.borderColor = '';
+        valid++;
 
     } else if(name.value.length === 0){
         isValid = false;
@@ -223,11 +226,10 @@ function validateName(){
 
 // Validate email function
 
-function  validateEmail(inputText){
+function  validateEmail(){
     const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    const email = inputText;
+    const email = inputs[1];
     let isValid = false;
-
     if(email.value.match(mailformat)){
 
         email.style.borderColor = '';
@@ -362,10 +364,13 @@ function validateCvv(){
 
 // Prevent from submiting
 
-$("form button").on('click submit',(e)=>{ 
+
+
+$("form button").on('click submit',(e)=>{
+    
+    e.preventDefault();
 
     // NAME
-
     if (inputs[0].value.length !== 0) {
         validateName();
     } else{
@@ -417,43 +422,11 @@ $("form button").on('click submit',(e)=>{
         validateCvv();
     } else {
         validateCvv();
-    }
+    };
 
-    if (
-        validateName() === true && 
-        validateEmail() === true &&
-        validateActivities() === true &&
-        validatePaymentOptions() === true &&
-        validateCreditCardNumber() === true &&
-        validateZipCode()=== true &&
-        validateCvv() == true
-        ){
-            console.log('true');
-    }else{
-        e.preventDefault();
-    }
+    console.log(valid);
 });
-/*
-Form validation
 
-If any of the following validation errors exist, prevent the user from submitting the form:
 
-1.Name field can't be blank.
 
-2.Email field must be a validly formatted e-mail address (you don't have to check that it's a real e-mail address, just that it's formatted like one: dave@teamtreehouse.com for example.
 
-3.User must select at least one checkbox under the "Register for Activities" section of the form.
-
-4.If the selected payment option is "Credit Card," make sure the user has supplied a Credit Card number, a Zip Code, and a 3 number CVV value before the form can be submitted.
-
-5.Credit Card field should only accept a number between 13 and 16 digits.
-
-6. The Zip Code field should accept a 5-digit number.
-
-The CVV should only accept a number that is exactly 3 digits long.
-
-NOTE: Don't rely on the built in HTML5 validation by adding the required attribute to your DOM elements. You need to actually create your own custom validation checks and error messages.
-
-NOTE: Avoid using snippets or plugins for this project. To get the most out of the experience, you should be writing all of your own code for your own custom validation.
-
-NOTE: Make sure your validation is only validating Credit Card info if Credit Card is the selected payment method.*/
