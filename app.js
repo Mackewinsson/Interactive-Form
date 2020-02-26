@@ -1,16 +1,46 @@
 const name = document.querySelector('input#name');
-name.focus();
+const inputs = document.querySelectorAll('input');
 const otherInput = document.querySelector('#other-title');
-otherInput.style.display = 'none';
-
-/* T-SHIRT SECTION */
-
-// HIDE SELECT THEME OPTION FROM MENU
-
+const jobRoleDropDown = inputs[2].nextElementSibling;
 const selectDesign = document.querySelector('#design');
 selectDesign.firstElementChild.style.display = 'none';
 const jsPuns = selectDesign.firstElementChild;
 const iLoveJs = selectDesign.firstElementChild.firstElementChild;
+const activities = document.querySelector('.activities');
+const activitiesGroup = activities.querySelectorAll('input');
+let totalCount = 0;
+let totalCountDisplay = document.createElement('DIV');
+const paymentSection = activities.nextElementSibling;
+const paymentOptions = paymentSection.children[2];
+const creditCardOption = paymentOptions.children[1];
+let valid = 0;
+name.focus();
+otherInput.style.display = 'none';
+
+console.log(paymentOptions.children);
+
+// JOB ROLE SECTION
+
+jobRoleDropDown.addEventListener('change', (e)=>{
+
+    if( e.target.value == 'other'){
+        otherInput.style.display = 'block';
+        otherInput.focus();
+    } else{
+        otherInput.style.display = 'none';
+    }
+});
+
+
+
+
+
+
+// T-SHIRT SECTION 
+
+// HIDE SELECT THEME OPTION FROM MENU
+
+
 
 // Until a theme is selected from the “Design” menu, no color options appear in the “Color” drop down and the “Color” field reads “Please select a T-shirt theme”.
 
@@ -28,15 +58,6 @@ for(let i = 0; i < options.length  ; i += 1){
 };
 
 // DONE
-
-/*
-
-For the T-Shirt "Color" menu, after a user selects a theme, only display the color options that match the design selected in the "Design" menu.
-
-1. If the user selects "Theme - JS Puns" then the color menu should only display "Cornflower Blue," "Dark Slate Grey," and "Gold."
-2. If the user selects "Theme - I ♥ JS" then the color menu should only display "Tomato," "Steel Blue," and "Dim Grey."
-
-*/
 
 selectDesign.addEventListener('change', (e)=>{
 
@@ -87,20 +108,8 @@ selectDesign.addEventListener('change', (e)=>{
 
 });
 
-/* ”Register for Activities” section
-Some events are at the same day and time as others. If the user selects a workshop, don't allow selection of a workshop at the same day and time -- you should disable the checkbox and visually indicate that the workshop in the competing time slot isn't available.
-When a user unchecks an activity, make sure that competing activities (if there are any) are no longer disabled.
-As a user selects activities, a running total should display below the list of checkboxes. For example, if the user selects "Main Conference", then Total: $200 should appear. If they add 1 workshop, the total should change to Total: $300.
-
-Project Warm Up: This section of the project, working with checkboxes, is one of the trickier parts of the project. For some helpful practice, check out the project Warm Up Checkboxes.*/
-
-const activities = document.querySelector('.activities');
-const activitiesGroup = activities.querySelectorAll('input');
-let totalCount = 0;
-let totalCountDisplay = document.createElement('DIV');
 totalCountDisplay.textContent = 'TOTAL: ' + totalCount;
 activities.appendChild(totalCountDisplay);
-
 
 activities.addEventListener('change', (e) =>{
 // Checks if a checkbox is checked
@@ -140,25 +149,6 @@ activities.addEventListener('change', (e) =>{
     };
 });
 
-/*"Payment Info" section
-Display payment sections based on the payment option chosen in the select menu.
-
-The "Credit Card" payment option should be selected by default. Display the #credit-card div, 
-and hide the "PayPal" and "Bitcoin" information. Payment option in the select menu should match 
-the payment option displayed on the page.
-
-When a user selects the "PayPal" payment option, the PayPal information should display, 
-and the credit card and “Bitcoin” information should be hidden.
-
-When a user selects the "Bitcoin" payment option, the Bitcoin information should display, 
-and the credit card and “PayPal” information should be hidden.
-
-NOTE: The user should not be able to select the "Select Payment Method" option from the payment select menu, because the user should not be able to submit the form without a chosen payment option.*/
-
-const paymentSection = activities.nextElementSibling;
-const paymentOptions = paymentSection.children[2];
-const creditCardOption = paymentOptions.children[1];
-
 creditCardOption.selected = true;
 $('#paypal').hide();
 $('#bitcoin').hide();
@@ -178,6 +168,7 @@ paymentSection.addEventListener('change', (e)=>{
             $('#bitcoin').hide();
             $('#credit-card').hide();
 
+
         } else if (e.target.value === 'bitcoin'){
 
             $('#paypal').hide();
@@ -190,10 +181,6 @@ paymentSection.addEventListener('change', (e)=>{
         }
 
 });
-
-const inputs = document.querySelectorAll('input');
-
-let valid = 0;
 
 // Validate Name function
 
@@ -265,9 +252,6 @@ function validateActivities(){
     };
     return isValid;  
 }
-
-
-
 
 // Validate Payment options
 
@@ -370,8 +354,6 @@ function validateCvv(){
 
 // Prevent from submiting
 
-
-
 $("form button").on('click submit',(e)=>{
 
     // NAME
@@ -412,32 +394,35 @@ $("form button").on('click submit',(e)=>{
     }
     // Creditcard option
 
-    if(inputs[10].value.length !== 0){
-        validateCreditCardNumber();
-    } else {
-        validateCreditCardNumber();
-        e.preventDefault();
+    if(paymentOptions.children[1].selected === true){
+
+        if(inputs[10].value.length !== 0){
+            validateCreditCardNumber();
+        } else {
+            validateCreditCardNumber();
+            e.preventDefault();
+        };
+    
+        // Zip code
+    
+        if (inputs[11].value.length !== 0){
+            validateZipCode();
+        } else {
+            validateZipCode();
+            e.preventDefault();
+        };
+    
+        // CVV
+    
+        if(inputs[12].value.length !== 0){
+            validateCvv();
+        } else {
+            validateCvv();
+            e.preventDefault();
+        };
+
     };
-
-    // Zip code
-
-    if (inputs[11].value.length !== 0){
-        validateZipCode();
-    } else {
-        validateZipCode();
-        e.preventDefault();
-    };
-
-    // CVV
-
-    if(inputs[12].value.length !== 0){
-        validateCvv();
-    } else {
-        validateCvv();
-        e.preventDefault();
-    };
+    
 });
-
-
 
 
