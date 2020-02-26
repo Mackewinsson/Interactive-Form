@@ -14,10 +14,56 @@ const paymentSection = activities.nextElementSibling;
 const paymentOptions = paymentSection.children[2];
 const creditCardOption = paymentOptions.children[1];
 let valid = 0;
+
+
+// Error messages
+
+const parentName = inputs[0].parentElement;
+const parentEmail = inputs[1].parentElement;
+const parentActivities = inputs[3].parentElement;
+const parentCreditCard = inputs[10].parentElement;
+const parentZip = inputs[11].parentElement;
+const parentCvv = inputs[12].parentElement;
+
+
+function createErrorMessage(parentElement, element, errorMessage){
+
+    const errorElement = document.createElement('div');
+    errorElement.innerText = errorMessage;
+    errorElement.style.color = 'red';
+    parentElement.insertBefore(errorElement, element);
+    errorElement.style.display = 'none';
+};
+
+// ERROR NAME
+createErrorMessage(parentName,inputs[0], 'Type your name *');
+
+// ERROR EMAIL
+
+createErrorMessage(parentEmail,inputs[1], 'Type your Email *');
+
+// ERROR ACTIVITIES
+
+createErrorMessage(parentActivities,inputs[3], 'Select at least one option *');
+
+// ERROR CREDITCARD
+
+createErrorMessage(parentCreditCard,inputs[10], 'Type a valid credit card number *');
+
+// ERROR ZIP
+
+createErrorMessage(parentZip,inputs[11], '(5 digits) *');
+// ERROR CVV
+
+createErrorMessage(parentCvv,inputs[12], '(3 digits) *');
+
+
+console.log(inputs);
+
+// FIRST SECTION
+
 name.focus();
 otherInput.style.display = 'none';
-
-console.log(paymentOptions.children);
 
 // JOB ROLE SECTION
 
@@ -30,11 +76,6 @@ jobRoleDropDown.addEventListener('change', (e)=>{
         otherInput.style.display = 'none';
     }
 });
-
-
-
-
-
 
 // T-SHIRT SECTION 
 
@@ -192,23 +233,16 @@ function validateName(){
     if (name.value.length > 0){
         isValid = true;
         name.style.borderColor = '';
+        name.previousElementSibling.style.display = 'none';
         valid += 1
 
     } else if(name.value.length === 0){
         isValid = false;
         name.style.borderColor = 'red';
-        name.setAttribute('placeholder', 'Write your name *');
+        name.previousElementSibling.style.display = 'block';
         name.focus();
-    } else {
-        isValid = false;
-        name.style.borderColor = 'red';
-        name.focus();
-    };
 
-    if(isValid === false) {
-        alert("You have to write your name");
-     };
-     return isValid;
+    };
 };
 
 // Validate email function
@@ -217,16 +251,17 @@ function  validateEmail(){
     const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     const email = inputs[1];
     let isValid = false;
+
     if(email.value.match(mailformat)){
 
         email.style.borderColor = '';
+        email.previousElementSibling.style.display = 'none';
         let isValid = true;
         valid += 1
 
     } else {
-        alert("You have entered an invalid email address!");
         email.style.borderColor = 'red';
-        email.setAttribute('placeholder', 'Write your email *');
+        email.previousElementSibling.style.display = 'block';
         let isValid = false;
     };
     return isValid;
@@ -236,19 +271,17 @@ function  validateEmail(){
 
 function validateActivities(){
 
+    const activitiesValidation = inputs[3];
     let isValid = false;
 
     if(totalCount !== 0){
-        activities.style.border = '';
-        activities.style.borderColor = '';
+        activitiesValidation.previousElementSibling.style.display = 'none';
         isValid = true;
         valid += 1
 
     } else {
         isValid = false;
-        alert('must select at least one');
-        activities.style.border = '2px solid red';
-        activities.style.borderColor = 'red';
+        activitiesValidation.previousElementSibling.style.display = 'block';
     };
     return isValid;  
 }
@@ -272,7 +305,6 @@ function validatePaymentOptions(){
     } else {
         isValid = false;
         paymentOptions.previousElementSibling.style.color = 'red';
-        alert('You must select al least one payment option');
     };
     
     return isValid;
@@ -287,18 +319,13 @@ function validateCreditCardNumber() {
     if (ccNum.value.length >=13 && ccNum.value.length <= 16 && isNaN(ccNum.value) === false){
         isValid = true;
         ccNum.style.borderColor = '';
+        ccNum.previousElementSibling.style.display = 'none';
         valid += 1
 
     } else if(ccNum.value.length === 0){
         isValid = false;
         ccNum.style.borderColor = 'red';
-    } else {
-        isValid = false;
-        ccNum.style.borderColor = 'red';
-    };
-  
-    if(isValid === false) {
-       alert("Please provide a valid credit card number!");
+        ccNum.previousElementSibling.style.display = 'block';
     };
 
     return isValid;
@@ -314,18 +341,14 @@ function validateZipCode(){
     if (zipCode.value.length == 5){
         isValid = true;
         zipCode.style.borderColor = '';
+        zipCode.previousElementSibling.style.display = 'none';
         valid += 1
     } else if(zipCode.value.length === 0){
         isValid = false;
         zipCode.style.borderColor = 'red';
-    } else {
-        isValid = false;
-        zipCode.style.borderColor = 'red';
-    }
-
-    if(isValid === false) {
-        alert("Please provide a 5 digit zipcode number!");
+        zipCode.previousElementSibling.style.display = 'block';
     };
+
     return isValid;
 };
 
@@ -337,24 +360,19 @@ function validateCvv(){
     if (cvv.value.length == 3){
         isValid = true;
         cvv.style.borderColor = '';
+        cvv.previousElementSibling.style.display = 'none';
         valid += 1
     } else if(cvv.value.length === 0){
         isValid = false;
         cvv.style.borderColor = 'red';
-    } else {
-        isValid = false;
-        cvv.style.borderColor = 'red';
-    }
-
-    if(isValid === false) {
-        alert("Please provide a 3 digit CVV number!");
-     };
+        cvv.previousElementSibling.style.display = 'block';
+    };
     return isValid;
 }
 
 // Prevent from submiting
 
-$("form button").on('click submit',(e)=>{
+$("form").on('submit',(e)=>{
 
     // NAME
     if (inputs[0].value.length !== 0) {
