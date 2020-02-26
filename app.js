@@ -316,13 +316,13 @@ function validateCreditCardNumber() {
 
     const ccNum = inputs[10];
     let isValid = false;
-    if (ccNum.value.length >=13 && ccNum.value.length <= 16 && isNaN(ccNum.value) === false){
+    if (ccNum.value.length >= 13 && ccNum.value.length <= 16 && isNaN(ccNum.value) === false){
         isValid = true;
         ccNum.style.borderColor = '';
         ccNum.previousElementSibling.style.display = 'none';
         valid += 1
 
-    } else if(ccNum.value.length === 0){
+    } else {
         isValid = false;
         ccNum.style.borderColor = 'red';
         ccNum.previousElementSibling.style.display = 'block';
@@ -338,12 +338,12 @@ function validateZipCode(){
     const zipCode = inputs[11];
     let isValid = false;
 
-    if (zipCode.value.length == 5){
+    if (zipCode.value.length == 5 && isNaN(zipCode.value) === false){
         isValid = true;
         zipCode.style.borderColor = '';
         zipCode.previousElementSibling.style.display = 'none';
         valid += 1
-    } else if(zipCode.value.length === 0){
+    } else {
         isValid = false;
         zipCode.style.borderColor = 'red';
         zipCode.previousElementSibling.style.display = 'block';
@@ -357,12 +357,12 @@ function validateCvv(){
     const cvv = inputs[12];
     let isValid = false;
 
-    if (cvv.value.length == 3){
+    if (cvv.value.length == 3 && isNaN(cvv.value) === false){
         isValid = true;
         cvv.style.borderColor = '';
         cvv.previousElementSibling.style.display = 'none';
         valid += 1
-    } else if(cvv.value.length === 0){
+    } else {
         isValid = false;
         cvv.style.borderColor = 'red';
         cvv.previousElementSibling.style.display = 'block';
