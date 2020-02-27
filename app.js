@@ -255,12 +255,12 @@ function  validateEmail(){
 
         email.style.borderColor = '';
         email.previousElementSibling.style.display = 'none';
-        let isValid = true;
+        isValid = true;
 
     } else {
         email.style.borderColor = 'red';
         email.previousElementSibling.style.display = 'block';
-        let isValid = false;
+        isValid = false;
     };
     return isValid;
 };
@@ -411,7 +411,6 @@ $("form").on('submit',(e)=>{
         };
     
     };
-    
 });
 
 
