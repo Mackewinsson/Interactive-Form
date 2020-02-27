@@ -234,15 +234,14 @@ function validateName(){
         isValid = true;
         name.style.borderColor = '';
         name.previousElementSibling.style.display = 'none';
-        valid += 1
 
-    } else if(name.value.length === 0){
+    } else {
         isValid = false;
         name.style.borderColor = 'red';
         name.previousElementSibling.style.display = 'block';
         name.focus();
-
     };
+    return isValid;
 };
 
 // Validate email function
@@ -257,7 +256,6 @@ function  validateEmail(){
         email.style.borderColor = '';
         email.previousElementSibling.style.display = 'none';
         let isValid = true;
-        valid += 1
 
     } else {
         email.style.borderColor = 'red';
@@ -277,7 +275,6 @@ function validateActivities(){
     if(totalCount !== 0){
         activitiesValidation.previousElementSibling.style.display = 'none';
         isValid = true;
-        valid += 1
 
     } else {
         isValid = false;
@@ -301,7 +298,7 @@ function validatePaymentOptions(){
 
     if (counter !== 0){
         isValid = true;
-        valid += 1
+
     } else {
         isValid = false;
         paymentOptions.previousElementSibling.style.color = 'red';
@@ -375,70 +372,44 @@ function validateCvv(){
 $("form").on('submit',(e)=>{
 
     // NAME
-    if (inputs[0].value.length !== 0) {
-        validateName();
-    } else{
-        validateName();
+    if(!validateName()){
         e.preventDefault();
-
     };
-    
+
     // EMAIL
 
-    if(inputs[1].value.length !== 0){
-        validateEmail(inputs[1]);
-
-    } else{
-        validateEmail(inputs[1]);
+    if(!validateEmail()){
         e.preventDefault();
     };
 
     // Activities section
 
-    if (totalCount !== 0){
-        validateActivities();
-    } else{
-        validateActivities();
+    if (!validateActivities()){
         e.preventDefault();
     };
 
     // Payment options
 
-    if (paymentOptions.length !== 0){
-        validatePaymentOptions();
-    } else{
-        validatePaymentOptions();
+    if (!validatePaymentOptions()){
         e.preventDefault();
-    }
+    };
+
     // Creditcard option
 
     if(paymentOptions.children[1].selected === true){
 
-        if(inputs[10].value.length !== 0){
-            validateCreditCardNumber();
-        } else {
-            validateCreditCardNumber();
-            e.preventDefault();
-        };
-    
-        // Zip code
-    
-        if (inputs[11].value.length !== 0){
-            validateZipCode();
-        } else {
-            validateZipCode();
-            e.preventDefault();
-        };
-    
-        // CVV
-    
-        if(inputs[12].value.length !== 0){
-            validateCvv();
-        } else {
-            validateCvv();
+        if (!validateCreditCardNumber()){
             e.preventDefault();
         };
 
+        if (!validateZipCode()){
+            e.preventDefault();
+        };
+
+        if (!validateCvv()){
+            e.preventDefault();
+        };
+    
     };
     
 });
